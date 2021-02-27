@@ -29,7 +29,7 @@ const ListCustomers = (props: itsPorps) => {
                     <tbody>
                     { customers.data?.map(e => {
                         return (
-                            <tr>
+                            <tr key={e.customerId}>
                                 <td>{e.name}</td>
                                 <td><button className='btn' onClick={() => handleDetail(e.customerId)}>詳細</button></td>
                             </tr>

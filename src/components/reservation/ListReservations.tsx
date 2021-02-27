@@ -67,12 +67,12 @@ const ListReservations = (props: itsPorps) => {
                         );
 
                         return (
-                            <tr>
+                            <tr key={e.startTime}>
                                 <td>{e.startTime}</td>
                                 <td className="rsvBoxContainer">
                                     {resvs?.map((x) => {
                                         return (
-                                            <ul onClick={() => handleEdit(x.reservation.reservationId)}>
+                                            <ul key={x.reservation.reservationId} onClick={() => handleEdit(x.reservation.reservationId)}>
                                                 <li>{x.name}</li>
                                                 <li>{x.reservation.timeFrame.frame.facility.facilityName}</li>
                                             </ul>
@@ -106,25 +106,6 @@ const ListReservations = (props: itsPorps) => {
                     disabledKeyboardNavigation />
                 <button className="btn" onClick={() => handleEdit(0)}>新規予約</button>
             </div>            
-            {/*
-            <div className='list'>
-                <table>
-                    <thead>
-                        <tr>
-                        <th className='time'>予約時間</th>
-                        <th className='item'>お客様名</th>
-                        <th className='item'>施設名</th>
-                        <th className='item'></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    { 
-                        renderReservation()
-                    }
-                    </tbody>
-                </table>
-            </div>
-            */}
             <div className='list'>
                 { renderTableReservation() }
             </div>

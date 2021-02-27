@@ -53,27 +53,30 @@ ReactDOM.render(
     <React.StrictMode>
         <QueryClientProvider client={ queryClient }>
             <Provider store={store}>
-
                 <BrowserRouter>
                     <Switch>
                         <Route exact path='/'>
                             <Login />
                         </Route>
-                        <Route excat path='/main'>
-                            <Reservation />
-                        </Route>
-                        <Route excat path='/reservation'>
-                            <Reservation />
-                        </Route>                    
-                        <Route excat path='/reservation/:id/edit'>
-                            <Reservation />
-                        </Route>                    
-                        <Route excat path='/customer'>
-                            <Customer />
-                        </Route>                    
-                        <Route excat path='/facility'>
-                            <Facility />
-                        </Route>                    
+
+                        {/* 要ログインエリア */}
+                        <Authenticate>
+                            <Route excat path='/main'>
+                                    <Reservation />
+                            </Route>
+                            <Route excat path='/reservation'>
+                                <Reservation />
+                            </Route>                    
+                            <Route excat path='/reservation/:id/edit'>
+                                <Reservation />
+                            </Route>                    
+                            <Route excat path='/customer'>
+                                <Customer />
+                            </Route>                    
+                            <Route excat path='/facility'>
+                                <Facility />
+                            </Route>                    
+                        </Authenticate>
                     </Switch>                
                 </BrowserRouter>
             </Provider>

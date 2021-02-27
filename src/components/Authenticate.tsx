@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
-import Session from './Session';
 
 interface Props {
     children: React.ReactNode;
@@ -8,14 +7,17 @@ interface Props {
 
 const Authenticate: React.FC<Props> = props => {
 
+    console.log(`Auth ${sessionStorage.getItem('isLogin')}`)
+
     const history = useHistory();
-    debugger
     if ( sessionStorage.getItem('isLogin') === 'true' ) {
-        history.push('/');
-        return null;
+        console.log("Auth OK")
+        return <>{props.children}</>
     }
     
-    return <>{props.children}</>
+    console.log("Auth NG")
+    history.push('/');
+    return null;
     
 }
 
