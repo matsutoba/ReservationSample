@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getReservations } from '../../apis/reservations';
 import { useQuery } from 'react-query';
@@ -35,7 +36,14 @@ const Reservation = () => {
         <Main>
             <div>
                 <div className='reservations'>
-                    <h2>予約</h2>
+                    <h2>
+                        <FontAwesomeIcon icon={["fas","calendar-alt"]} />
+                        <span>
+                            予約管理
+                            {mode===ScreenMode.Edit ? ' > 編集' : ''}
+                        </span>
+                    </h2>
+                    <hr></hr>
                     {(()=>{
                         switch (mode) {
                             case ScreenMode.List:

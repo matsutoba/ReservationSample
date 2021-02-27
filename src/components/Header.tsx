@@ -27,9 +27,9 @@ const Header = (props: itsProps) => {
             <span className="menu-icon">
                 <FontAwesomeIcon icon={["fas","bars"]} onClick={handleMenuIcon} />
             </span>
-            <span>予約システム</span>
+            <span className="systemName">予約システム</span>
             <div>
-                <button className='setting' onClick={(e)=>logout(e)}>ログアウト</button>
+                <button className='btn negative' onClick={(e)=>logout(e)}>ログアウト</button>
             </div>
             {children}
         </div>

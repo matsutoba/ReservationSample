@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { useQuery, useIsFetching } from 'react-query';
 import Header from './Header';
+import Footer from './Footer';
 import Menu from './Menu';
 import Reservation from './reservation/Reservation';
 import Facility from './facility/Facility';
@@ -59,6 +60,7 @@ const Main = (props:itsProps) => {
                     { children }
                 </div>
             </div>
+            <Footer />
         </section>
     );
 }

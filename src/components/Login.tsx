@@ -2,14 +2,17 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { loginReducer, LoginState, LoginAction, LoginActionType } from '../reducers/login_reducer';
 import { useHistory } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/style.css';
 
 const Login = () => {
 
     const history = useHistory();
 
-    const initState = { userId: '99999', password: 'password', login: false, message: '' };
+    const initState = { userId: '99999', password: '12345', login: false, message: '' };
     const [state, dispatch] = useReducer( loginReducer , initState );
+
+    const [passwordState, setPasswordState] = useState('password');
 
     const handleUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -46,8 +49,8 @@ const Login = () => {
         <section className="section background-lightgray">
             <div className="login">
                 <div className='login-form'>
-                    <h1>ログイン</h1>
-                    <div className="errorMessage">{state.message}</div>
+                    <h1>予約システム ログイン</h1>
+                    <p className="errorMessage">{state.message}</p>
                     <div>
                         <div className='entry'>
                             <input className='input' 
@@ -55,21 +58,31 @@ const Login = () => {
                                 type='text'
                                 id='userid' 
                                 size={ 20 } 
+                                maxLength={ 20 }
                                 value={ state.userId }
                                 onChange={ (e) => handleUserId(e) }    
                             >                                
                             </input>
                         </div>
                         <div className='entry'>
-                            <input className='input' 
-                                placeholder='パスワード'
-                                type='password' 
-                                id='password' 
-                                size={ 20 } 
-                                value={ state.password }
-                                onChange={ (e) => handlePassword(e) }
-                            >                                
-                            </input>
+                            <div className='password'>
+                                <input className='input' 
+                                    placeholder='パスワード'
+                                    type={passwordState} 
+                                    id='password' 
+                                    size={ 20 } 
+                                    maxLength={ 20 }
+                                    value={ state.password }
+                                    onChange={ (e) => handlePassword(e) }
+                                />
+                                <span>
+                                    {passwordState === 'text' ? 
+                                        <FontAwesomeIcon icon={["fas","eye-slash"]} onClick={() => setPasswordState('password')} />
+                                        :
+                                        <FontAwesomeIcon icon={["fas","eye"]} onClick={() => setPasswordState('text')} />
+                                    }
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -81,6 +94,8 @@ const Login = () => {
                         >
                         </input>
                     </div>
+                    <p>※ローカルPC内で動作します。</p>
+                    <p>※ユーザIDは99999、パスワードは12345です。</p>
                 </div>
             </div>
         </section>

@@ -59,7 +59,14 @@ export const patchCustomer = (customer: Customer): Promise<boolean> => {
     return Promise.resolve(true);
 }
 
+export const deleteCustomer = (customerId: number): Promise<boolean> => {
+    const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+    const deleted = customers.filter(e => e.customerId !== customerId);
 
+    Storage.setJSON<Customer[]>(StorageType.Customer, deleted);
+    return Promise.resolve(true);
+
+}
 
 
 

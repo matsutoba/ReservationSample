@@ -44,3 +44,13 @@ export const postFacility = (data:Facility): Promise<boolean> => {
     Storage.setJSON<Facility[]>(StorageType.Facility, facilities);
     return Promise.resolve(true);
 }
+
+export const deleteFacility = (facilityId: number): Promise<boolean> => {
+    const facilities = Storage.getJSON<Facility[]>(StorageType.Facility) ?? [];
+    const deleted = facilities.filter(e => e.id !== facilityId);
+
+    Storage.setJSON<Facility[]>(StorageType.Facility, deleted);
+    return Promise.resolve(true);
+
+}
+

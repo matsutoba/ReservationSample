@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/fontawesome-free-solid';
 
 type itsProps = {
     isShow: boolean;
@@ -18,9 +17,18 @@ const Menu = (props: itsProps) => {
                 </span>
             <div>
                 <ul>
-                    <li onClick={ () => onMenuSelected(1) }>予約</li>
-                    <li onClick={ () => onMenuSelected(2) }>顧客マスタ</li>
-                    <li onClick={ () => onMenuSelected(3) }>施設マスタ</li>
+                    <li onClick={ () => onMenuSelected(1) }>
+                        <FontAwesomeIcon icon={["fas","calendar-alt"]} />
+                        <span>予約管理</span>
+                    </li>
+                    <li onClick={ () => onMenuSelected(2) }>
+                        <FontAwesomeIcon icon={["fas","user-circle"]} />
+                        <span>顧客管理</span>
+                    </li>
+                    <li onClick={ () => onMenuSelected(3) }>
+                        <FontAwesomeIcon icon={["fas","building"]} />
+                        <span>施設管理</span>
+                    </li>
                 </ul>
             </div>
         </div>

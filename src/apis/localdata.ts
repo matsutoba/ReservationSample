@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Customer } from '../types/Customer';
 import { Facility } from '../types/Facility';
 import { Reservation } from '../types/Reservation';
@@ -133,7 +134,7 @@ const localDataSetup = () => {
             reservation: {
                 reservationId: 1,
                 customerId: customer.customerId,
-                reservationDate: '2021/02/26',
+                reservationDate: dayjs().format('YYYY/MM/DD'),
                 timeFrameId: 1,
                 timeFrame: {
                     dayOfWeek: 4,

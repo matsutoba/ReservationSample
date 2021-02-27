@@ -30,7 +30,8 @@ const EditReservation = (props: itsPorps) => {
     }
 
     /* modal */
-    const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowSaveModal, setIsShowSaveModal] = useState(false);
+    const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
     const [goSave, setGoSave] = useState(false);
     const [goDelete, setGoDelete] = useState(false);
 
@@ -96,15 +97,15 @@ const EditReservation = (props: itsPorps) => {
             }
         }
     );
-    const handleConfirmSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setIsShowModal(true);
+    const handleSaveConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setIsShowSaveModal(true);
     }
-    const cancelConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setIsShowModal(false);
+    const cancelSaveConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setIsShowSaveModal(false);
     }
 
     const handleSaveReservation = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setIsShowModal(false);
+        setIsShowSaveModal(false);
 
         const request = {
             reservationId: reservationId,
@@ -118,6 +119,12 @@ const EditReservation = (props: itsPorps) => {
     }
     
     /* 削除 */
+    const handleDeleteConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setIsShowDeleteModal(true);
+    }
+    const cancelDeleteConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setIsShowDeleteModal(false);
+    }
     const deleteMutation = useMutation(
         deleteReservation,
         {
@@ -159,91 +166,105 @@ const EditReservation = (props: itsPorps) => {
     }, [customerId, facilityId, timeFrameId])
 
     return (
-        <div className='content'>
-            <div className='edit'>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>お客様</th>
-                            <td>
-                                {( ()=>{
-                                    if ( reservationId > 0) {
-                                        return (
-                                            <span>{reservation.data?.name}</span>
-                                        );
-                                    } 
-
-                                    return (                                
-                                        <select ref={refCustomer} id='customer' onChange={handleCustomerChange}>
-                                            <option>選択してください</option>
-                                            {
-                                                customers.data?.map(e => {
-                                                    return <option key={`c${e.customerId}`} value={e.customerId}>{e.customerId} - {e.name}</option>
-                                                })
-                                            }
-                                        </select>
+        <div className='edit'>
+            {customerId>0 ? (
+                <p>予約内容の編集を行います。</p>
+            ) : (
+                <p>新規の予約を作成します。</p>
+            )}
+            <table>
+                <tbody>
+                    <tr>
+                        <th>お客様</th>
+                        <td>
+                            {( ()=>{
+                                if ( reservationId > 0) {
+                                    return (
+                                        <span>{reservation.data?.name}</span>
                                     );
-                                })()}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>施設</th>
-                            <td>
-                                <select ref={refFacility} id='facility' onChange={handleFacilityChange}>
+                                } 
+
+                                return (                                
+                                    <select ref={refCustomer} id='customer' onChange={handleCustomerChange}>
                                         <option>選択してください</option>
                                         {
-                                            facilities.data?.map(e => {
-                                                return <option key={`f${e.id}`} value={e.id}>{e.name}</option>
+                                            customers.data?.map(e => {
+                                                return <option key={`c${e.customerId}`} value={e.customerId}>{e.customerId} - {e.name}</option>
                                             })
                                         }
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>日付</th>
-                            <td>
-                                <DatePicker
-                                    className="datePicker"
-                                    dateFormat='yyyy/MM/dd'
-                                    onChange={(date) => {}}
-                                    onSelect={(date) => {setReservationDate(dayjs(date).format('YYYY/MM/DD'))} }
-                                    selected={dayjs(reservationDate).toDate()}
-                                    locale={ja}
-                                    disabledKeyboardNavigation />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>時間</th>
-                            <td>
-                                <select id='customer' ref={refTimeFrame} onChange={handleTimeChange}>
+                                    </select>
+                                );
+                            })()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>施設</th>
+                        <td>
+                            <select ref={refFacility} id='facility' onChange={handleFacilityChange}>
                                     <option>選択してください</option>
                                     {
-                                        timeframes.data?.map(e => {
-                                            return <option key={`t${e.timeFrameId}`} value={e.timeFrameId}>{e.startTime}</option>
+                                        facilities.data?.map(e => {
+                                            return <option key={`f${e.id}`} value={e.id}>{e.name}</option>
                                         })
                                     }
                             </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>日付</th>
+                        <td>
+                            <DatePicker
+                                className="datePicker"
+                                dateFormat='yyyy/MM/dd'
+                                onChange={(date) => {}}
+                                onSelect={(date) => {setReservationDate(dayjs(date).format('YYYY/MM/DD'))} }
+                                selected={dayjs(reservationDate).toDate()}
+                                locale={ja}
+                                disabledKeyboardNavigation />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>時間</th>
+                        <td>
+                            <select id='customer' ref={refTimeFrame} onChange={handleTimeChange}>
+                                <option>選択してください</option>
+                                {
+                                    timeframes.data?.map(e => {
+                                        return <option key={`t${e.timeFrameId}`} value={e.timeFrameId}>{e.startTime}</option>
+                                    })
+                                }
+                        </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <div className='btn-group'>
                 <button className='btn negative' onClick={onEditFinish}>戻る</button>
-                <button className='btn' onClick={handleConfirmSave} disabled={!canSave} >保存</button>
+                <button className='btn' onClick={handleSaveConfirm} disabled={!canSave} >保存</button>
                 { (()=>{
                     if (reservationId>0) {
-                        return <button className='btn' onClick={handleDeleteReservation}>削除</button>
+                        return <button className='btn delete' onClick={handleDeleteConfirm}>削除</button>
                     }
                 })() }
             </div>
-            <div className={`modal_overlay ${isShowModal ? '' : 'none'}`}>
+            <div className={`modal_overlay ${isShowSaveModal ? '' : 'none'}`}>
                 <div className="modal_window">
                     <div className="rsvModalContent">
                         <p>保存してよろしいですか？</p>
-                        <div>
-                            <button className="btn negative" onClick={ cancelConfirm } >いいえ</button>
+                        <div className='btn-group'>
+                            <button className="btn negative" onClick={ cancelSaveConfirm } >いいえ</button>
                             <button className="btn" onClick={ handleSaveReservation }>はい</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={`modal_overlay ${isShowDeleteModal ? '' : 'none'}`}>
+                <div className="modal_window">
+                    <div className="rsvModalContent">
+                        <p>削除してよろしいですか？</p>
+                        <div className='btn-group'>
+                            <button className="btn negative" onClick={ cancelDeleteConfirm } >いいえ</button>
+                            <button className="btn" onClick={ handleDeleteReservation }>はい</button>
                         </div>
                     </div>
                 </div>
