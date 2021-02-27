@@ -68,7 +68,7 @@ const ListReservations = (props: itsPorps) => {
 
                         return (
                             <tr key={e.startTime}>
-                                <td>{e.startTime}</td>
+                                <td className="rsvStartTime">{e.startTime}</td>
                                 <td className="rsvBoxContainer">
                                     {resvs?.map((x) => {
                                         return (

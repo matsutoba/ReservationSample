@@ -149,7 +149,96 @@ const localDataSetup = () => {
                 },
                         
             }
+        },
+        {
+            customerId: customer.customerId,
+            name: customer.name,
+            reservation: {
+                reservationId: 2,
+                customerId: customer.customerId,
+                reservationDate: dayjs().format('YYYY/MM/DD'),
+                timeFrameId: 1,
+                timeFrame: {
+                    dayOfWeek: 4,
+                    startTime: '10:00',
+                    endTime: '11:00',
+                    frame: {
+                        facilityId: facility.id,
+                        facility: {
+                            facilityName: facility.name,
+                        },
+                    },
+                },
+                        
+            }
         },   
+        {
+            customerId: customer.customerId,
+            name: customer.name,
+            reservation: {
+                reservationId: 3,
+                customerId: customer.customerId,
+                reservationDate: dayjs().format('YYYY/MM/DD'),
+                timeFrameId: 1,
+                timeFrame: {
+                    dayOfWeek: 4,
+                    startTime: '10:00',
+                    endTime: '11:00',
+                    frame: {
+                        facilityId: facility.id,
+                        facility: {
+                            facilityName: facility.name,
+                        },
+                    },
+                },
+                        
+            }
+        },   
+        {
+            customerId: customer.customerId,
+            name: customer.name,
+            reservation: {
+                reservationId: 4,
+                customerId: customer.customerId,
+                reservationDate: dayjs().format('YYYY/MM/DD'),
+                timeFrameId: 1,
+                timeFrame: {
+                    dayOfWeek: 4,
+                    startTime: '10:00',
+                    endTime: '11:00',
+                    frame: {
+                        facilityId: facility.id,
+                        facility: {
+                            facilityName: facility.name,
+                        },
+                    },
+                },
+                        
+            }
+        },   
+        {
+            customerId: customer.customerId,
+            name: customer.name,
+            reservation: {
+                reservationId: 5,
+                customerId: customer.customerId,
+                reservationDate: dayjs().format('YYYY/MM/DD'),
+                timeFrameId: 1,
+                timeFrame: {
+                    dayOfWeek: 4,
+                    startTime: '10:00',
+                    endTime: '11:00',
+                    frame: {
+                        facilityId: facility.id,
+                        facility: {
+                            facilityName: facility.name,
+                        },
+                    },
+                },
+                        
+            }
+        },   
+
     ]);
 
 }

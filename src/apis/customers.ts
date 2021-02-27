@@ -2,24 +2,37 @@ import axios, { AxiosPromise } from 'axios';
 import { Customer } from '../types/Customer';
 import { Reservation } from '../types/Reservation';
 import { TimeFrame } from '../types/TimeFrame';
+import { PAGESIZE } from '../utils/Const';
 import Storage from '../utils/Storage';
 import { getFacility } from './facilities';
 import { StorageType } from './localdata';
 import { getTimeFrames } from './timeframes';
 
+function getLocalData():Customer[] {
+    const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+    return customers;
+}
 
-
-export const getCustomers = (): Promise<Customer[]> => {
+export const getCustomersAll = (): Promise<Customer[]> => {
     const url = 'https://localhost:44391/api/customer';
     // return axios.get<Customer[]>(url);
-    const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+    const customers = getLocalData();
     return Promise.resolve(customers);
+}
+
+export const getCustomers = (page: number): Promise<Customer[]> => {
+    const url = 'https://localhost:44391/api/customer';
+    // return axios.get<Customer[]>(url);
+    const customers = getLocalData();
+    return Promise.resolve(
+        customers.slice(PAGESIZE*(page-1), PAGESIZE*page)
+    );
 }
 
 export const getCustomer = (id: number): Promise<Customer|undefined> => {
     const url = `https://localhost:44391/api/customer/${id}`;
     //return axios.get<Customer>(url);
-    const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+    const customers = getLocalData();
     return Promise.resolve(customers.find((c) => c.customerId === id));
 }
 
@@ -45,7 +58,7 @@ export const patchCustomer = (customer: Customer): Promise<boolean> => {
     });
     */
 
-   const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+   const customers = getLocalData();
    if ( customers.find(e => e.customerId === customer.customerId) ) {
             customers.find((e,index) => {
             if ( e.customerId === customer.customerId ) {
@@ -60,7 +73,7 @@ export const patchCustomer = (customer: Customer): Promise<boolean> => {
 }
 
 export const deleteCustomer = (customerId: number): Promise<boolean> => {
-    const customers = Storage.getJSON<Customer[]>(StorageType.Customer) ?? [];
+    const customers = getLocalData();
     const deleted = customers.filter(e => e.customerId !== customerId);
 
     Storage.setJSON<Customer[]>(StorageType.Customer, deleted);

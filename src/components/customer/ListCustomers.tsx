@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { getCustomers } from '../../apis/customers';
 import { useQuery } from 'react-query';
+import Pagination from '../common/Pagination';
+import { PAGESIZE } from '../../utils/Const';
+import { current } from '@reduxjs/toolkit';
 
 type itsPorps = {
     handleDetail: (id: number) => void;
@@ -10,8 +13,9 @@ type itsPorps = {
 
 const ListCustomers = (props: itsPorps) => {
     const { handleDetail, handleAddCustomer } = props;
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const customers = useQuery('customers', getCustomers);
+    const customers = useQuery(['customers',currentPage], () => getCustomers(currentPage));
 
     return (
         <>
@@ -37,6 +41,14 @@ const ListCustomers = (props: itsPorps) => {
                     })}
                     </tbody>
                 </table>
+                <Pagination 
+                    currentPage={currentPage}
+                    pageCount={PAGESIZE}
+                    totalCount={3}
+                    onClickNext={()=>{setCurrentPage(currentPage+1)}}
+                    onClickPrev={()=>{setCurrentPage(currentPage-1)}}
+                    onClickPage={(e)=>{setCurrentPage(e)}}
+                />
             </div>
         </>
     );

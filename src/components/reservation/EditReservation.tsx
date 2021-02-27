@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { getCustomers, patchReservation } from '../../apis/customers';
+import { getCustomersAll, patchReservation } from '../../apis/customers';
 import { getFacilities } from '../../apis/facilities';
 import { getTimeFrames } from '../../apis/timeframes';
 
@@ -38,7 +38,7 @@ const EditReservation = (props: itsPorps) => {
     /* customers */
     const refCustomer = useRef<HTMLSelectElement>(null);
     const [customerId, setCustomerId] = useState(0);
-    const customers = useQuery('customers', getCustomers);
+    const customers = useQuery('customers', getCustomersAll);
     const handleCustomerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setCustomerId(Number(e.target.value));
     }
