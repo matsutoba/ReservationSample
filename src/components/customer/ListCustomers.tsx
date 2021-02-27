@@ -15,7 +15,7 @@ const ListCustomers = (props: itsPorps) => {
     const { handleDetail, handleAddCustomer } = props;
     const [currentPage, setCurrentPage] = useState(1);
 
-    const customers = useQuery(['customers',currentPage], () => getCustomers(currentPage));
+    const searchResult = useQuery(['customers',currentPage], () => getCustomers(currentPage));
 
     return (
         <>
@@ -31,7 +31,7 @@ const ListCustomers = (props: itsPorps) => {
                         </tr>
                     </thead>
                     <tbody>
-                    { customers.data?.map(e => {
+                    { searchResult.data?.items.map(e => {
                         return (
                             <tr key={e.customerId}>
                                 <td>{e.name}</td>
@@ -44,7 +44,7 @@ const ListCustomers = (props: itsPorps) => {
                 <Pagination 
                     currentPage={currentPage}
                     pageCount={PAGESIZE}
-                    totalCount={3}
+                    totalCount={searchResult.data ? searchResult.data.totalCount : 0}
                     onClickNext={()=>{setCurrentPage(currentPage+1)}}
                     onClickPrev={()=>{setCurrentPage(currentPage-1)}}
                     onClickPage={(e)=>{setCurrentPage(e)}}

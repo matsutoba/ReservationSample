@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { getFacilities } from '../../apis/facilities';
 import { useQuery } from 'react-query';
+import Pagination from '../common/Pagination';
+import { PAGESIZE } from '../../utils/Const';
 
 type itsPorps = {
     handleDetail: (id: number) => void;
@@ -11,7 +13,8 @@ type itsPorps = {
 const ListFacilities = (props: itsPorps) => {
     const { handleDetail, handleAddFacility } = props;
 
-    const reservations = useQuery('facilityies', getFacilities);
+    const [currentPage, setCurrentPage] = useState(1);
+    const searchResult = useQuery(['facilityies',currentPage], () => getFacilities(currentPage));
 
     return (
         <>
@@ -27,7 +30,7 @@ const ListFacilities = (props: itsPorps) => {
                         </tr>
                     </thead>
                     <tbody>
-                    { reservations.data?.map(e => {
+                    { searchResult.data?.items.map(e => {
                         return (
                             <tr key={`f${e.id}`}>
                                 <td>{e.name}</td>
@@ -37,6 +40,14 @@ const ListFacilities = (props: itsPorps) => {
                     })}
                     </tbody>
                 </table>
+                <Pagination 
+                    currentPage={currentPage}
+                    pageCount={PAGESIZE}
+                    totalCount={searchResult.data ? searchResult.data.totalCount : 0}
+                    onClickNext={()=>{setCurrentPage(currentPage+1)}}
+                    onClickPrev={()=>{setCurrentPage(currentPage-1)}}
+                    onClickPage={(e)=>{setCurrentPage(e)}}
+                />
             </div>
         </>
     );

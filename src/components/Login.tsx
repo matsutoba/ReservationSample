@@ -1,56 +1,59 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { loginReducer, LoginState, LoginAction, LoginActionType } from '../reducers/login_reducer';
 import { useHistory } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/style.css';
+import { useQuery, useQueryClient } from 'react-query';
+import { loginCheck } from '../apis/login';
 
 const Login = () => {
 
     const history = useHistory();
 
-    const initState = { userId: '99999', password: '12345', login: false, message: '' };
-    const [state, dispatch] = useReducer( loginReducer , initState );
-
+    const [userId, setUserId] = useState('99999');
+    const [password, setPassword] = useState('12345');
+    const [message, setMessage] = useState('');
     const [passwordState, setPasswordState] = useState('password');
 
-    const handleUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        dispatch({
-            type: LoginActionType.CHECK,
-            payload: { userId: e.target.value, password: state.password }  
+    const queryClient = useQueryClient();
+    const loginQuery = useQuery(
+        ['login', {userId, password}], 
+        () => loginCheck(userId, password),
+        {
+            enabled: false,
         });
+    const handleUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserId(e.target.value);
     }
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        dispatch({
-            type: LoginActionType.CHECK,
-            payload: { userId: state.userId, password: e.target.value } 
-        });
+        setPassword(e.target.value);
     }
-    const handleLogin = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        e.preventDefault();
-        dispatch({
-            type: LoginActionType.LOGIN,
-            payload: { userId: state.userId, password: state.password } 
-        });
-        if ( state.login ) {
+    const handleLogin = async(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+        if (!userId || !password) {
+            setMessage('ユーザID または パスワードが未入力です');
+            return;
         }
-    
-    }
 
-    useEffect(()=>{
-        if ( sessionStorage.getItem('isLogin') ) {
-            history.push('/main');
+        const isLogin = await queryClient.fetchQuery(
+            ['login', {userId, password}], 
+            () => loginCheck(userId, password)    
+        );
+
+        if (!isLogin) {
+            setMessage('ユーザID または パスワードが違います');
+            return;
         }
-    },[state.login])
+
+        sessionStorage.setItem('isLogin', 'true');
+        history.push('/main');
+        
+    }
 
     return (
         <section className="section background-lightgray">
             <div className="login">
                 <div className='login-form'>
                     <h1>予約システム ログイン</h1>
-                    <p className="errorMessage">{state.message}</p>
+                    <p className="errorMessage">{message}</p>
                     <div>
                         <div className='entry'>
                             <input className='input' 
@@ -59,7 +62,7 @@ const Login = () => {
                                 id='userid' 
                                 size={ 20 } 
                                 maxLength={ 20 }
-                                value={ state.userId }
+                                value={ userId }
                                 onChange={ (e) => handleUserId(e) }    
                             >                                
                             </input>
@@ -72,7 +75,7 @@ const Login = () => {
                                     id='password' 
                                     size={ 20 } 
                                     maxLength={ 20 }
-                                    value={ state.password }
+                                    value={ password }
                                     onChange={ (e) => handlePassword(e) }
                                 />
                                 <span>

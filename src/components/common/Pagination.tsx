@@ -56,7 +56,7 @@ const Pagination = (props: itsProps): JSX.Element => {
             <ul>
                 {Array(maxPage).fill(0).map((_,i) => i+1).map(e => {
                     return (
-                        <li
+                        <li key={`p${e}`}
                             onClick={() => handleClickPage(e)}
                             className={`page ${e === currentPage ? 'current' : ''}`}
                         >

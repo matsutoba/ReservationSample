@@ -1,5 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
-import { Facility } from '../types/Facility';
+import { Facility, FacilitySearchResult } from '../types/Facility';
+import { PAGESIZE } from '../utils/Const';
 import Storage from '../utils/Storage';
 import { StorageType } from './localdata';
 
@@ -8,12 +9,28 @@ function getLocalData(): Facility[] {
     return data;
 }
 
-export const getFacilities = (): Promise<Facility[]> => {
+export const getFacilitiesAll = (): Promise<Facility[]> => {
     const url = `https://localhost:44391/api/facility`;
     // return axios.get<Facility[]>(url);
 
     const facilities = getLocalData();
     return Promise.resolve(facilities);
+}
+
+export const getFacilities = (page: number): Promise<FacilitySearchResult> => {
+    const url = `https://localhost:44391/api/facility`;
+    // return axios.get<Facility[]>(url);
+
+    const facilities = getLocalData();
+    return Promise.resolve(
+        {
+            currentPage: page,
+            pageSize: PAGESIZE,
+            totalCount: facilities.length,
+            items:facilities.slice(PAGESIZE*(page-1), PAGESIZE*page)
+        }
+    );
+
 }
 
 export const getFacility = (id: number): Promise<Facility|undefined> => {
@@ -42,7 +59,10 @@ export const postFacility = (data:Facility): Promise<boolean> => {
             }
         });
     } else {
-        facilities.push(data);
+        facilities.push({
+            ...data,
+            id: facilities[facilities.length-1].id + 1,
+        });
     }
 
     Storage.setJSON<Facility[]>(StorageType.Facility, facilities);

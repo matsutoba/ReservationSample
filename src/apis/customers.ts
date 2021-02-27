@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import { Customer } from '../types/Customer';
+import { Customer, CustomerSearchResult } from '../types/Customer';
 import { Reservation } from '../types/Reservation';
 import { TimeFrame } from '../types/TimeFrame';
 import { PAGESIZE } from '../utils/Const';
@@ -20,12 +20,17 @@ export const getCustomersAll = (): Promise<Customer[]> => {
     return Promise.resolve(customers);
 }
 
-export const getCustomers = (page: number): Promise<Customer[]> => {
+export const getCustomers = (page: number): Promise<CustomerSearchResult> => {
     const url = 'https://localhost:44391/api/customer';
     // return axios.get<Customer[]>(url);
     const customers = getLocalData();
     return Promise.resolve(
-        customers.slice(PAGESIZE*(page-1), PAGESIZE*page)
+        {
+            currentPage: page,
+            pageSize: PAGESIZE,
+            totalCount: customers.length,
+            items:customers.slice(PAGESIZE*(page-1), PAGESIZE*page)
+        }
     );
 }
 
@@ -66,7 +71,10 @@ export const patchCustomer = (customer: Customer): Promise<boolean> => {
             }
         });
     } else {
-        customers.push(customer);       
+        customers.push({
+            ...customer,
+            customerId: customers[customers.length-1].customerId + 1,
+        });
     }
     Storage.setJSON<Customer[]>(StorageType.Customer, customers);
     return Promise.resolve(true);
@@ -163,7 +171,7 @@ export const patchReservation = async (request: ReservationRequest): Promise<boo
             customerId: request.customerId,
             name: customer ? customer.name : '',
             reservation: {
-                reservationId: reservations.length+1,
+                reservationId: reservations[reservations.length-1].reservation.reservationId+1,
                 customerId: request.customerId,
                 reservationDate: request.reservationDate,
                 timeFrameId: request.timeFrameId,

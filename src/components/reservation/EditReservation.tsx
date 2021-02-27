@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { getCustomersAll, patchReservation } from '../../apis/customers';
-import { getFacilities } from '../../apis/facilities';
+import { getFacilities, getFacilitiesAll } from '../../apis/facilities';
 import { getTimeFrames } from '../../apis/timeframes';
 
 import { useQuery, QueryClient, useMutation } from 'react-query';
@@ -51,7 +51,7 @@ const EditReservation = (props: itsPorps) => {
     /* facilities */
     const refFacility = useRef<HTMLSelectElement>(null);
     const [facilityId, setFacilityId] = useState(0);
-    const facilities = useQuery('facilities', getFacilities);
+    const facilities = useQuery('facilities', getFacilitiesAll);
     const handleFacilityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFacilityId(Number(e.target.value));
     }
@@ -189,7 +189,7 @@ const EditReservation = (props: itsPorps) => {
                                         <option>選択してください</option>
                                         {
                                             customers.data?.map(e => {
-                                                return <option key={`c${e.customerId}`} value={e.customerId}>{e.customerId} - {e.name}</option>
+                                                return <option key={`c${e.customerId}`} value={e.customerId}>{e.name}</option>
                                             })
                                         }
                                     </select>

@@ -25,15 +25,43 @@ const localDataSetup = () => {
     Storage.setJSON<Customer[]>(StorageType.Customer, [
         {
             customerId: 1,
-            name: 'やまだたろう',
+            name: 'ユーザ０１',
         },
         {
             customerId: 2,
-            name: 'いしかわごえもん',
+            name: 'ユーザ０２',
         },
         {
             customerId: 3,
-            name: 'じげんだいすけ',
+            name: 'ユーザ０３',
+        },        
+        {
+            customerId: 4,
+            name: 'ユーザ０４',
+        },
+        {
+            customerId: 5,
+            name: 'ユーザ０５',
+        },
+        {
+            customerId: 6,
+            name: 'ユーザ０６',
+        },        
+        {
+            customerId: 7,
+            name: 'ユーザ０７',
+        },
+        {
+            customerId: 8,
+            name: 'ユーザ０８',
+        },
+        {
+            customerId: 9,
+            name: 'ユーザ０９',
+        },        
+        {
+            customerId: 10,
+            name: 'ユーザ１０',
         }        
     ]);
 
@@ -58,6 +86,10 @@ const localDataSetup = () => {
         {
             id: 5,
             name: 'E会議室',
+        },    
+        {
+            id: 6,
+            name: 'F会議室',
         },    
     ]);
 
