@@ -6,11 +6,11 @@ interface Props {
 }
 
 const Authenticate: React.FC<Props> = props => {
-
+/*
     console.log(`Auth ${sessionStorage.getItem('isLogin')}`)
     return <>{props.children}</>
+*/
 
-/*
     const history = useHistory();
     if ( sessionStorage.getItem('isLogin') === 'true' ) {
         console.log("Auth OK")
@@ -20,7 +20,7 @@ const Authenticate: React.FC<Props> = props => {
     console.log("Auth NG")
     history.push('/');
     return null;
-    */
+    
 }
 
 export default Authenticate;
